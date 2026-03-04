@@ -1,6 +1,6 @@
 # TwelveLabs on AWS Bedrock 🎥
 
-A production-ready video archive search and analysis system powered by TwelveLabs AI models (Marengo and Pegasus) through Amazon Bedrock.
+A video archive search and analysis system powered by TwelveLabs AI models (Marengo and Pegasus) through Amazon Bedrock.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![React](https://img.shields.io/badge/react-19.x-blue.svg)
