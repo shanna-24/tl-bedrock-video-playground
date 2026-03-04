@@ -1,0 +1,87 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+.eggs
+*.egg
+
+# Virtual environments
+.venv
+venv
+ENV
+env
+backend/venv
+backend/.venv
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+.hypothesis
+backend/.hypothesis
+backend/.pytest_cache
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Kiro
+.kiro
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend build artifacts (but keep source for building)
+frontend/dist/
+frontend/dist-electron/
+frontend/node_modules/
+*.dmg
+*.exe
+*.AppImage
+
+# Logs
+*.log
+logs/
+backend/logs/
+
+# Local data
+data/
+backend/data/
+backend/data_old/
+
+# Test files
+backend/test_videos/
+backend/tests/
+
+# Config files with secrets
+config.local.yaml
+config.prod.yaml
+*.local.yaml
+
+# Documentation (not needed in container)
+docs/
+*.md
+!backend/CONFIG.md
+
+# Infrastructure
+infrastructure/
+
+# Generated diagrams
+generated-diagrams/
+
+# Powers
+powers/
+
+# Old/backup files
+*_old/
+*.bak

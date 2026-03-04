@@ -1,0 +1,28 @@
+{
+    "id": "video_content",
+    "sequence": 3,
+    "name": "Video Content",
+    "description": "Assess the ENTIRE VIDEO to identify any content quality issues based on the following classifications:",
+    "subcategories": [
+        {
+            "name": "Suitability",
+            "guidance": "Create an issue ONLY if the video is poorly made or unsuitable for use as paid advertising content targeted at adults. If the video is well-made and suitable, do NOT create any issue for this subcategory.",
+            "status": "REVIEW"
+        },
+        {
+            "name": "Brand Exclusive",
+            "guidance": "Create an issue ONLY if the video features or mentions ANY competing brands other than {company}. If no competing brands appear, do NOT create any issue for this subcategory.",
+            "status": "REVIEW"
+        },
+        {
+            "name": "Product Line Focus",
+            "guidance": "Create an issue ONLY if the {product_line} product line is NOT the primary focus. If {product_line} IS the primary focus, do NOT create any issue for this subcategory. Secondary mentions of other products are acceptable and should not trigger an issue.",
+            "status": "REVIEW"
+        },
+        {
+            "name": "Tone",
+            "guidance": "Create an issue ONLY if the video contains negative or derogatory content towards {company} or the {product_line} product line. If the tone is positive or neutral, do NOT create any issue for this subcategory.",
+            "status": "REVIEW"
+        }
+    ]
+}

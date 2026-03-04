@@ -1,0 +1,16 @@
+{
+    "enabled": true,
+    "description": "Pre-check for content relevance using transcription lexical search before Pegasus analysis",
+    "search_config": {
+        "search_type": "lexical",
+        "search_field": "transcription",
+        "search_term": "{product_line}",
+        "min_results": 1
+    },
+    "on_fail": {
+        "category": "Content Relevance",
+        "subcategory": "Irrelevant Content",
+        "status": "BLOCK",
+        "description": "The video does not mention {product_line} at any point in the transcription."
+    }
+}

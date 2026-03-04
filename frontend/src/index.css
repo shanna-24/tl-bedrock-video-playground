@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* TwelveLabs Brand Colors */
+  --color-primary: #6366F1;
+  --color-primary-dark: #4F46E5;
+  --color-primary-light: #818CF8;
+  --color-tl-lime: #84CC16;
+  --color-tl-lime-dark: #65A30D;
+  --color-tl-lime-light: #A3E635;
+  --color-tl-dark: #0F172A;
+  --color-tl-dark-secondary: #1E293B;
+  
+  /* Override default lime colors for more subtle dark mode buttons */
+  --color-lime-400: #7ABF17;
+  --color-lime-500: #6BA814;
+  --color-lime-600: #5A8E11;
+  --color-lime-700: #4A7A0D;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+html {
+  background-color: white;
+}
+
+html.dark {
+  background-color: #0F172A;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: white;
+}
+
+body.dark {
+  background-color: #0F172A;
+}
+
+#root {
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+/* Custom animations for Modern & Bold header */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Shimmer hover effect */
+.shimmer-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.shimmer-hover:hover::after {
+  opacity: 1;
+  animation: shimmer 1.5s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Frosted glass effects */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Frosty hover highlight */
+.frost-hover {
+  transition: all 0.2s ease;
+}
+
+.frost-hover:hover {
+  background: rgba(140, 140, 140, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(100, 100, 100, 0.18), inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+:where(.dark) .frost-hover:hover {
+  background: rgba(180, 180, 180, 0.18);
+  box-shadow: 0 4px 30px rgba(180, 180, 180, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+/* Vignette overlay for video thumbnails */
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+/* Animated tab underline */
+.tab-underline {
+  position: relative;
+}
+
+.tab-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease-out;
+}
+
+.tab-underline:hover::after,
+.tab-underline.active::after {
+  transform: scaleX(1);
+}

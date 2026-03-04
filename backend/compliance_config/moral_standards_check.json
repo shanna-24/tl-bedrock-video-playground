@@ -1,0 +1,28 @@
+{
+    "id": "moral_standards",
+    "sequence": 2,
+    "name": "Moral Standards",
+    "description": "Assess the ENTIRE VIDEO for compliance with acceptable moral standards (for North America and Western Europe). Only create issues for content that violates the following classifications:",
+    "subcategories": [
+        {
+            "name": "Hate Speech",
+            "guidance": "Create an issue ONLY if the video contains hate speech, harassment, abuse, or discriminatory language. If none is present, do NOT create any issue for this subcategory.",
+            "status": "BLOCK"
+        },
+        {
+            "name": "Illegal Behaviour",
+            "guidance": "Create an issue ONLY if the video shows or discusses drug use or other illegal behaviour. If none is present, do NOT create any issue for this subcategory.",
+            "status": "BLOCK"
+        },
+        {
+            "name": "Profanity",
+            "guidance": "Create an issue ONLY if the video contains swearing or foul language. If none is present, do NOT create any issue for this subcategory.",
+            "status": "BLOCK"
+        },
+        {
+            "name": "Danger",
+            "guidance": "Create an issue ONLY if the video shows unsafe product usage (e.g. eye-area misuse) or makes potentially harmful claims. If none is present, do NOT create any issue for this subcategory.",
+            "status": "BLOCK"
+        }
+    ]
+}

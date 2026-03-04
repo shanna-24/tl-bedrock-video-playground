@@ -1,0 +1,38 @@
+# Core dependencies
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+httpx<0.28  # Pin to <0.28 for compatibility with starlette TestClient
+websockets==12.0  # WebSocket support for job notifications
+aiohttp==3.9.1  # Async HTTP client for web search API
+
+# AWS SDK
+boto3==1.42.44
+
+# Authentication
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+
+# Configuration
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+PyYAML==6.0.1
+
+# Video processing
+opencv-python==4.9.0.80
+Pillow>=10.0.0
+# Note: ffmpeg/ffprobe required for video duration extraction (system package)
+# Install: brew install ffmpeg (macOS) or apt-get install ffmpeg (Linux)
+
+# JSON streaming for large files
+ijson==3.2.3
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+hypothesis==6.98.3
+
+# Development
+black==24.1.1
+flake8==7.0.0
+mypy==1.8.0

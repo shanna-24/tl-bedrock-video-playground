@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # LocalStack for AWS service mocking
+  localstack:
+    image: localstack/localstack:latest
+    container_name: tl-video-localstack
+    ports:
+      - "4566:4566"  # LocalStack gateway
+      - "4510-4559:4510-4559"  # External services port range
+    environment:
+      - SERVICES=s3,bedrock
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - "./localstack-data:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - tl-video-network
+
+  # Backend service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: tl-video-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - CONFIG_PATH=/app/config.local.yaml
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app
+      - ./config.local.yaml:/app/config.local.yaml
+      - ./data:/app/data
+    depends_on:
+      - localstack
+    networks:
+      - tl-video-network
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: tl-video-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - tl-video-network
+    command: npm run dev -- --host 0.0.0.0
+
+networks:
+  tl-video-network:
+    driver: bridge
+
+volumes:
+  localstack-data:

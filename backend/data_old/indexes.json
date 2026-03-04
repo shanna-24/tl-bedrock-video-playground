@@ -1,0 +1,422 @@
+[
+  {
+    "id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+    "name": "Food",
+    "created_at": "2026-02-25T18:35:19.798934",
+    "video_count": 5,
+    "s3_vectors_collection_id": "index-b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+    "metadata": {
+      "vector_index_arn": "arn:aws:s3vectors:eu-west-1:493245400047:bucket/tl-video-playground-local/index/index-b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+      "videos": [
+        {
+          "id": "3180451f-adb6-48f5-a94c-c58cce725d7d",
+          "index_id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+          "filename": "Baked Stuffed Pasta.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/3180451f-adb6-48f5-a94c-c58cce725d7d/Baked Stuffed Pasta.mp4",
+          "duration": 21.339138,
+          "uploaded_at": "2026-02-25T18:35:40.672099",
+          "embedding_ids": [
+            "56cc231c-fc86-4d64-b8b4-100badceffee"
+          ],
+          "metadata": {
+            "s3_key": "videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/3180451f-adb6-48f5-a94c-c58cce725d7d/Baked Stuffed Pasta.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "a5236dfc-05c8-435f-9653-d5b4f378c126",
+          "index_id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+          "filename": "Chicken Teryaki.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/a5236dfc-05c8-435f-9653-d5b4f378c126/Chicken Teryaki.mp4",
+          "duration": 38.568345,
+          "uploaded_at": "2026-02-25T18:35:49.711745",
+          "embedding_ids": [
+            "550742ff-d57f-4dbe-96af-5d521259dcd2"
+          ],
+          "metadata": {
+            "s3_key": "videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/a5236dfc-05c8-435f-9653-d5b4f378c126/Chicken Teryaki.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "f2db19e6-2abf-4504-a4b3-aa55bb3e0299",
+          "index_id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+          "filename": "Fast Food Burrito Showdown.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/f2db19e6-2abf-4504-a4b3-aa55bb3e0299/Fast Food Burrito Showdown.mp4",
+          "duration": 50.480181,
+          "uploaded_at": "2026-02-25T18:35:58.768001",
+          "embedding_ids": [
+            "aa0d6b18-c400-492a-930e-3f0e88629f8b"
+          ],
+          "metadata": {
+            "s3_key": "videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/f2db19e6-2abf-4504-a4b3-aa55bb3e0299/Fast Food Burrito Showdown.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "1851ec7e-ec3c-4b0c-8b8c-06f0c4e0bcc8",
+          "index_id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+          "filename": "In-N-Out.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/1851ec7e-ec3c-4b0c-8b8c-06f0c4e0bcc8/In-N-Out.mp4",
+          "duration": 19.969161,
+          "uploaded_at": "2026-02-25T18:36:05.252863",
+          "embedding_ids": [
+            "a72ee0f3-4f7b-4254-b422-3bc52bfc8482"
+          ],
+          "metadata": {
+            "s3_key": "videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/1851ec7e-ec3c-4b0c-8b8c-06f0c4e0bcc8/In-N-Out.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "d397c7a0-30bf-4960-91de-baca04dcbf3f",
+          "index_id": "b36eadd2-00e0-4eaf-ac14-5766dd56873c",
+          "filename": "Salted Caramel Twix Cheesecake.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/d397c7a0-30bf-4960-91de-baca04dcbf3f/Salted Caramel Twix Cheesecake.mp4",
+          "duration": 61.34712,
+          "uploaded_at": "2026-02-25T18:36:13.304387",
+          "embedding_ids": [
+            "7bca42d2-d5c5-4f29-9a7f-bb530acfd1ae"
+          ],
+          "metadata": {
+            "s3_key": "videos/b36eadd2-00e0-4eaf-ac14-5766dd56873c/d397c7a0-30bf-4960-91de-baca04dcbf3f/Salted Caramel Twix Cheesecake.mp4",
+            "content_type": "video/mp4"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "64ee6c97-fd23-41f1-82ec-a4b815e7b1a2",
+    "name": "Rugby",
+    "created_at": "2026-02-25T18:35:22.750077",
+    "video_count": 2,
+    "s3_vectors_collection_id": "index-64ee6c97-fd23-41f1-82ec-a4b815e7b1a2",
+    "metadata": {
+      "vector_index_arn": "arn:aws:s3vectors:eu-west-1:493245400047:bucket/tl-video-playground-local/index/index-64ee6c97-fd23-41f1-82ec-a4b815e7b1a2",
+      "videos": [
+        {
+          "id": "6fe10743-9655-49b5-9830-1248ac6d2cee",
+          "index_id": "64ee6c97-fd23-41f1-82ec-a4b815e7b1a2",
+          "filename": "HIGHLIGHTS Gloucester v Bath.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/64ee6c97-fd23-41f1-82ec-a4b815e7b1a2/6fe10743-9655-49b5-9830-1248ac6d2cee/HIGHLIGHTS Gloucester v Bath.mp4",
+          "duration": 634.88,
+          "uploaded_at": "2026-02-25T18:36:31.068321",
+          "embedding_ids": [
+            "4e929604-1fec-40f4-8296-f0381669725f"
+          ],
+          "metadata": {
+            "s3_key": "videos/64ee6c97-fd23-41f1-82ec-a4b815e7b1a2/6fe10743-9655-49b5-9830-1248ac6d2cee/HIGHLIGHTS Gloucester v Bath.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "b2ac8eeb-c0ae-4c3c-85bc-0b4c0797ff18",
+          "index_id": "64ee6c97-fd23-41f1-82ec-a4b815e7b1a2",
+          "filename": "HIGHLIGHTS Leicester Tigers v Sale Sharks.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/64ee6c97-fd23-41f1-82ec-a4b815e7b1a2/b2ac8eeb-c0ae-4c3c-85bc-0b4c0797ff18/HIGHLIGHTS Leicester Tigers v Sale Sharks.mp4",
+          "duration": 622.178685,
+          "uploaded_at": "2026-02-25T18:36:59.346842",
+          "embedding_ids": [
+            "12262199-7fb9-455c-bd6e-91fa4ba4c287"
+          ],
+          "metadata": {
+            "s3_key": "videos/64ee6c97-fd23-41f1-82ec-a4b815e7b1a2/b2ac8eeb-c0ae-4c3c-85bc-0b4c0797ff18/HIGHLIGHTS Leicester Tigers v Sale Sharks.mp4",
+            "content_type": "video/mp4"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+    "name": "Charlotte Tilbury",
+    "created_at": "2026-03-02T16:27:22.043605",
+    "video_count": 5,
+    "s3_vectors_collection_id": "index-afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+    "metadata": {
+      "vector_index_arn": "arn:aws:s3vectors:eu-west-1:493245400047:bucket/tl-video-playground-local/index/index-afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+      "videos": [
+        {
+          "id": "4d627cdd-28e9-4e30-9f84-9b4b104a4c5a",
+          "index_id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+          "filename": "Charlotte Tilbury BEST SELLERS Truly Worth Your Money! (and which ones arent..)-640x360-mp4a.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/4d627cdd-28e9-4e30-9f84-9b4b104a4c5a/Charlotte Tilbury BEST SELLERS Truly Worth Your Money! (and which ones arent..)-640x360-mp4a.mp4",
+          "duration": 1334.056054,
+          "uploaded_at": "2026-03-02T16:28:14.584912",
+          "embedding_ids": [
+            "fbbea150-7642-4e02-a76a-3094e058d33e"
+          ],
+          "metadata": {
+            "s3_key": "videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/4d627cdd-28e9-4e30-9f84-9b4b104a4c5a/Charlotte Tilbury BEST SELLERS Truly Worth Your Money! (and which ones arent..)-640x360-mp4a.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "8dd1e2bc-a405-4785-8a2b-af4ca8694d30",
+          "index_id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+          "filename": "Charlotte Tilbury NEW Airbrush Flawless Foundation Review + Wear Test-640x360-avc1-mp4a.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/8dd1e2bc-a405-4785-8a2b-af4ca8694d30/Charlotte Tilbury NEW Airbrush Flawless Foundation Review + Wear Test-640x360-avc1-mp4a.mp4",
+          "duration": 1418.646349,
+          "uploaded_at": "2026-03-02T16:28:26.688823",
+          "embedding_ids": [
+            "99ba1e6f-5f35-4a19-adad-609d443fec6e"
+          ],
+          "metadata": {
+            "s3_key": "videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/8dd1e2bc-a405-4785-8a2b-af4ca8694d30/Charlotte Tilbury NEW Airbrush Flawless Foundation Review + Wear Test-640x360-avc1-mp4a.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "c627b1da-e1fb-4823-a066-b74bc8dfafd6",
+          "index_id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+          "filename": "CHARLOTTE TILBURY QUICK & EASY 5 MIN MAKEUP  Super Chic & Pretty Fresh Kits-640x360-avc1-mp4a.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/c627b1da-e1fb-4823-a066-b74bc8dfafd6/CHARLOTTE TILBURY QUICK & EASY 5 MIN MAKEUP  Super Chic & Pretty Fresh Kits-640x360-avc1-mp4a.mp4",
+          "duration": 1135.386122,
+          "uploaded_at": "2026-03-02T16:28:37.409009",
+          "embedding_ids": [
+            "1c40d19d-0df9-4b12-b6e6-c22fa2e9f354"
+          ],
+          "metadata": {
+            "s3_key": "videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/c627b1da-e1fb-4823-a066-b74bc8dfafd6/CHARLOTTE TILBURY QUICK & EASY 5 MIN MAKEUP  Super Chic & Pretty Fresh Kits-640x360-avc1-mp4a.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "bc24200f-b6b9-49f3-98c9-104cd1803de2",
+          "index_id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+          "filename": "CHARLOTTE TILBURY QUICK & EASY MAKEUP KIT SUN-KISSED TEST & REVIEW-640x360-avc1-mp4a.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/bc24200f-b6b9-49f3-98c9-104cd1803de2/CHARLOTTE TILBURY QUICK & EASY MAKEUP KIT SUN-KISSED TEST & REVIEW-640x360-avc1-mp4a.mp4",
+          "duration": 750.585034,
+          "uploaded_at": "2026-03-02T16:28:46.742845",
+          "embedding_ids": [
+            "7b896977-fcd4-46e2-9a81-16ea717c09a5"
+          ],
+          "metadata": {
+            "s3_key": "videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/bc24200f-b6b9-49f3-98c9-104cd1803de2/CHARLOTTE TILBURY QUICK & EASY MAKEUP KIT SUN-KISSED TEST & REVIEW-640x360-avc1-mp4a.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "b8259389-2fa1-45ce-859f-cc17e5fbdc20",
+          "index_id": "afdf1dac-ddf0-45c4-a428-772c8d0e5c8b",
+          "filename": "My Honest Thoughts On Charlotte Tilburys New Collection-640x360-avc1-mp4a.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/b8259389-2fa1-45ce-859f-cc17e5fbdc20/My Honest Thoughts On Charlotte Tilburys New Collection-640x360-avc1-mp4a.mp4",
+          "duration": 1045.849977,
+          "uploaded_at": "2026-03-02T16:28:55.543854",
+          "embedding_ids": [
+            "d2e142dd-b5d2-47f7-aa62-f53f4f8eca50"
+          ],
+          "metadata": {
+            "s3_key": "videos/afdf1dac-ddf0-45c4-a428-772c8d0e5c8b/b8259389-2fa1-45ce-859f-cc17e5fbdc20/My Honest Thoughts On Charlotte Tilburys New Collection-640x360-avc1-mp4a.mp4",
+            "content_type": "video/mp4"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+    "name": "Charlotte Tilbury Shorts",
+    "created_at": "2026-03-02T16:27:33.777466",
+    "video_count": 7,
+    "s3_vectors_collection_id": "index-bc77d193-ee17-4387-a1e7-6f3ed219e704",
+    "metadata": {
+      "vector_index_arn": "arn:aws:s3vectors:eu-west-1:493245400047:bucket/tl-video-playground-local/index/index-bc77d193-ee17-4387-a1e7-6f3ed219e704",
+      "videos": [
+        {
+          "id": "48582b21-1921-4c6c-a2f3-e11c8b28c194",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "#pillowtalk @CharlotteTilbury-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/48582b21-1921-4c6c-a2f3-e11c8b28c194/#pillowtalk @CharlotteTilbury-1080x1920-avc1.mp4",
+          "duration": 84.311655,
+          "uploaded_at": "2026-03-02T16:29:14.486264",
+          "embedding_ids": [
+            "d0df1a11-b8f9-48cf-bfbe-d09e89442c26"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/48582b21-1921-4c6c-a2f3-e11c8b28c194/#pillowtalk @CharlotteTilbury-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "3a57b7d7-0d9d-4e8f-b018-11f41b7b9d7f",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "5 WORST CHARLOTTE TILBURY PRODUCTS-720x1280-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/3a57b7d7-0d9d-4e8f-b018-11f41b7b9d7f/5 WORST CHARLOTTE TILBURY PRODUCTS-720x1280-avc1.mp4",
+          "duration": 52.244898,
+          "uploaded_at": "2026-03-02T16:29:41.119187",
+          "embedding_ids": [
+            "b7d134fa-fead-479a-aac2-f0d610006191"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/3a57b7d7-0d9d-4e8f-b018-11f41b7b9d7f/5 WORST CHARLOTTE TILBURY PRODUCTS-720x1280-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "b2f2f5d9-50b1-4104-a2b0-39744e914429",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "BEST vs WORST Charlotte tilbury makeup #shorts-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/b2f2f5d9-50b1-4104-a2b0-39744e914429/BEST vs WORST Charlotte tilbury makeup #shorts-1080x1920-avc1.mp4",
+          "duration": 31.021859,
+          "uploaded_at": "2026-03-02T16:29:48.675829",
+          "embedding_ids": [
+            "26641b2f-c698-49a1-a803-dd13af9edaa8"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/b2f2f5d9-50b1-4104-a2b0-39744e914429/BEST vs WORST Charlotte tilbury makeup #shorts-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "e715eae9-a6b0-4e6e-aa16-3110b7b43390",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "Brutally honest review of all the Charlotte Tilbury products I have ever tried! #charlottetilbury-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/e715eae9-a6b0-4e6e-aa16-3110b7b43390/Brutally honest review of all the Charlotte Tilbury products I have ever tried! #charlottetilbury-1080x1920-avc1.mp4",
+          "duration": 48.901224,
+          "uploaded_at": "2026-03-02T16:29:55.831513",
+          "embedding_ids": [
+            "0af4e9b9-c79f-49df-bfad-9adddb433a32"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/e715eae9-a6b0-4e6e-aa16-3110b7b43390/Brutally honest review of all the Charlotte Tilbury products I have ever tried! #charlottetilbury-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "8e02a778-60f5-4e69-b4d8-cdfe7a576e76",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "Charlotte tilbury foundation review  #shorts #short #makeupreview-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/8e02a778-60f5-4e69-b4d8-cdfe7a576e76/Charlotte tilbury foundation review  #shorts #short #makeupreview-1080x1920-avc1.mp4",
+          "duration": 109.249887,
+          "uploaded_at": "2026-03-02T16:30:03.732919",
+          "embedding_ids": [
+            "2bb4405f-f0f9-41c1-acd7-f6e8cd0021cb"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/8e02a778-60f5-4e69-b4d8-cdfe7a576e76/Charlotte tilbury foundation review  #shorts #short #makeupreview-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "4dedbc2f-b194-4601-ab27-6d4d4dcaadac",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "Charlotte Tilbury products worthnot worth the money #charlottetilbury #makeuphaul #makeupshorts-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/4dedbc2f-b194-4601-ab27-6d4d4dcaadac/Charlotte Tilbury products worthnot worth the money #charlottetilbury #makeuphaul #makeupshorts-1080x1920-avc1.mp4",
+          "duration": 141.014785,
+          "uploaded_at": "2026-03-02T16:30:34.662083",
+          "embedding_ids": [
+            "b343b251-43bb-4416-b229-4c1f84ba9f06"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/4dedbc2f-b194-4601-ab27-6d4d4dcaadac/Charlotte Tilbury products worthnot worth the money #charlottetilbury #makeuphaul #makeupshorts-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "6fe36464-f168-4666-abdf-0e4884d4c13a",
+          "index_id": "bc77d193-ee17-4387-a1e7-6f3ed219e704",
+          "filename": "NEW Charlotte Tilbury UNREAL SKIN #shorts #short-1080x1920-avc1.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/6fe36464-f168-4666-abdf-0e4884d4c13a/NEW Charlotte Tilbury UNREAL SKIN #shorts #short-1080x1920-avc1.mp4",
+          "duration": 48.274286,
+          "uploaded_at": "2026-03-02T16:30:40.751108",
+          "embedding_ids": [
+            "2608fc8b-f2ea-4c32-858e-719b6173cf01"
+          ],
+          "metadata": {
+            "s3_key": "videos/bc77d193-ee17-4387-a1e7-6f3ed219e704/6fe36464-f168-4666-abdf-0e4884d4c13a/NEW Charlotte Tilbury UNREAL SKIN #shorts #short-1080x1920-avc1.mp4",
+            "content_type": "video/mp4"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+    "name": "Charlotte Tilbury Socials",
+    "created_at": "2026-03-03T12:45:50.451046",
+    "video_count": 5,
+    "s3_vectors_collection_id": "index-686a0b5a-0699-488c-96e0-a62e4df9aab3",
+    "metadata": {
+      "vector_index_arn": "arn:aws:s3vectors:eu-west-1:493245400047:bucket/tl-video-playground-local/index/index-686a0b5a-0699-488c-96e0-a62e4df9aab3",
+      "videos": [
+        {
+          "id": "8d51d29e-9928-4dfa-8570-83c234331a15",
+          "index_id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+          "filename": "THERES A DUPE FOR PILLOW TALK MEDIUM!!.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/8d51d29e-9928-4dfa-8570-83c234331a15/THERES A DUPE FOR PILLOW TALK MEDIUM!!.mp4",
+          "duration": 26.679728,
+          "uploaded_at": "2026-03-03T12:49:47.103569",
+          "embedding_ids": [
+            "7d1e13a2-1861-4f97-8eb7-e4eb6f9be327"
+          ],
+          "metadata": {
+            "s3_key": "videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/8d51d29e-9928-4dfa-8570-83c234331a15/THERES A DUPE FOR PILLOW TALK MEDIUM!!.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "f8216199-0416-4f81-be35-ec1f3679c9fb",
+          "index_id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+          "filename": "Charlotte Tilbury PILLOW TALK swatches on brown skin.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/f8216199-0416-4f81-be35-ec1f3679c9fb/Charlotte Tilbury PILLOW TALK swatches on brown skin.mp4",
+          "duration": 16.648707,
+          "uploaded_at": "2026-03-03T12:51:38.717111",
+          "embedding_ids": [
+            "30ab356c-05e4-4b7d-95d8-e539351ddc46"
+          ],
+          "metadata": {
+            "s3_key": "videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/f8216199-0416-4f81-be35-ec1f3679c9fb/Charlotte Tilbury PILLOW TALK swatches on brown skin.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "e6769bc0-1fb1-46bc-b554-1292ef72fd49",
+          "index_id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+          "filename": "All Three Shades of Charlotte Tilbury Pillow Talk Lipstick.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/e6769bc0-1fb1-46bc-b554-1292ef72fd49/All Three Shades of Charlotte Tilbury Pillow Talk Lipstick.mp4",
+          "duration": 15.51093,
+          "uploaded_at": "2026-03-03T12:52:07.887961",
+          "embedding_ids": [
+            "15c90adc-e589-49e5-b334-09b3d344bf01"
+          ],
+          "metadata": {
+            "s3_key": "videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/e6769bc0-1fb1-46bc-b554-1292ef72fd49/All Three Shades of Charlotte Tilbury Pillow Talk Lipstick.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "0854e377-f308-4f22-9dea-a3e11e1832b6",
+          "index_id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+          "filename": "HOW TO Use my PillowTalk Multi-Glow 4 WAYS for a EUPHORIC GLOW.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/0854e377-f308-4f22-9dea-a3e11e1832b6/HOW TO Use my PillowTalk Multi-Glow 4 WAYS for a EUPHORIC GLOW.mp4",
+          "duration": 46.579229,
+          "uploaded_at": "2026-03-03T13:10:48.861266",
+          "embedding_ids": [
+            "f33ec672-cdb9-469c-8caf-80495e4be802"
+          ],
+          "metadata": {
+            "s3_key": "videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/0854e377-f308-4f22-9dea-a3e11e1832b6/HOW TO Use my PillowTalk Multi-Glow 4 WAYS for a EUPHORIC GLOW.mp4",
+            "content_type": "video/mp4"
+          }
+        },
+        {
+          "id": "296b681d-f010-44ac-a137-75fc344406b7",
+          "index_id": "686a0b5a-0699-488c-96e0-a62e4df9aab3",
+          "filename": "Beauty Brands I WILL NEVER Work With.mp4",
+          "s3_uri": "s3://tl-video-playground-local/videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/296b681d-f010-44ac-a137-75fc344406b7/Beauty Brands I WILL NEVER Work With.mp4",
+          "duration": 86.447891,
+          "uploaded_at": "2026-03-03T13:28:22.803053",
+          "embedding_ids": [
+            "2818a280-b40f-4a02-8b3f-ec9a652c1969"
+          ],
+          "metadata": {
+            "s3_key": "videos/686a0b5a-0699-488c-96e0-a62e4df9aab3/296b681d-f010-44ac-a137-75fc344406b7/Beauty Brands I WILL NEVER Work With.mp4",
+            "content_type": "video/mp4"
+          }
+        }
+      ]
+    }
+  }
+]

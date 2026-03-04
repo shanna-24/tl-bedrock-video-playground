@@ -1,0 +1,12 @@
+# Ignore all video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.flv
+*.wmv
+
+# Keep the README
+!README.md
+!.gitignore

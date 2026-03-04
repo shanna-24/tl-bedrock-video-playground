@@ -1,0 +1,331 @@
+/**
+ * Dashboard Component
+ * 
+ * Main dashboard view for authenticated users.
+ * Integrates index management, video upload, search, and analysis features.
+ * 
+ * Validates: Requirements 5.1, 8.3, 8.4
+ */
+
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import { useIndexes } from '../../hooks/useIndexes';
+import { useSearch } from '../../hooks/useSearch';
+import { useVideos } from '../../hooks/useVideos';
+import { analysisApi } from '../../services/api';
+import IndexList from '../Index/IndexList';
+import VideoUpload from '../Video/VideoUpload';
+import VideoList from '../Video/VideoList';
+import VideoPlayer from '../Video/VideoPlayer';
+import SearchBar from '../Search/SearchBar';
+import SearchResults from '../Search/SearchResults';
+import AnalysisForm from '../Analysis/AnalysisForm';
+import AnalysisResults from '../Analysis/AnalysisResults';
+import type { Video, VideoClip, AnalysisResult } from '../../types';
+
+type ActiveTab = 'videos' | 'search' | 'analysis';
+
+export default function Dashboard() {
+  const { logout } = useAuth();
+  const { indexes, selectedIndex, selectIndex, refreshIndexes, maxIndexes } = useIndexes();
+  const { searchResults, query, searchTime, isSearching, error: searchError, search, clearResults } = useSearch();
+  const { videos, refreshVideos } = useVideos(selectedIndex?.id || null);
+  
+  const [activeTab, setActiveTab] = useState<ActiveTab>('videos');
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [selectedClip, setSelectedClip] = useState<VideoClip | null>(null);
+  const [selectedClipVideo, setSelectedClipVideo] = useState<Video | null>(null);
+  const [videoRefreshTrigger, setVideoRefreshTrigger] = useState(0);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+
+  // Clear selected video/clip and search results when index changes or is deleted
+  useEffect(() => {
+    setSelectedVideo(null);
+    setSelectedClip(null);
+    setSelectedClipVideo(null);
+    clearResults();
+    setAnalysisResult(null);
+    setAnalysisError(null);
+    setActiveTab('videos');
+  }, [selectedIndex?.id]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const handleVideoUploadComplete = () => {
+    setVideoRefreshTrigger(prev => prev + 1);
+    refreshVideos();
+    refreshIndexes();
+  };
+
+  const handleVideoSelect = (video: Video) => {
+    setSelectedVideo(video);
+    setSelectedClip(null);
+  };
+
+  const handleVideoDeleted = () => {
+    // Refresh both videos and indexes after deletion
+    setVideoRefreshTrigger(prev => prev + 1);
+    refreshVideos();
+    refreshIndexes();
+    
+    // Clear selected video if it was deleted
+    if (selectedVideo) {
+      setSelectedVideo(null);
+    }
+  };
+
+  const handleClipSelect = (clip: VideoClip) => {
+    setSelectedClip(clip);
+    setSelectedVideo(null);
+    
+    // Find video details from the loaded videos list
+    const video = videos.find(v => v.id === clip.video_id);
+    setSelectedClipVideo(video || null);
+  };
+
+  const handleSearch = async (searchQuery: string, topK?: number) => {
+    if (!selectedIndex) return;
+    await search(selectedIndex.id, searchQuery, topK);
+  };
+
+  const handleAnalyze = async (query: string, scope: 'index' | 'video', scopeId: string) => {
+    setIsAnalyzing(true);
+    setAnalysisError(null);
+    setAnalysisResult(null);
+
+    try {
+      let result: AnalysisResult;
+      if (scope === 'index') {
+        result = await analysisApi.analyzeIndex(scopeId, query);
+      } else {
+        result = await analysisApi.analyzeVideo(scopeId, query);
+      }
+      setAnalysisResult(result);
+    } catch (err: any) {
+      const errorMessage = err.detail || err.message || 'Analysis failed';
+      setAnalysisError(errorMessage);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleClearAnalysis = () => {
+    setAnalysisResult(null);
+    setAnalysisError(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-600 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-gray-50 backdrop-blur-lg rounded-2xl shadow-2xl p-6 md:p-8 border border-gray-200 mb-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              TwelveLabs Video Playground
+            </h1>
+            <button
+              onClick={handleLogout}
+              className="px-6 py-3 rounded-lg font-semibold text-white
+                       bg-blue-700
+                       hover:bg-blue-800
+                       focus:outline-none focus:ring-2 focus:ring-blue-300
+                       transform transition-all duration-200
+                       hover:scale-[1.02] active:scale-[0.98]
+                       shadow-lg hover:shadow-xl"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left sidebar - Index Management */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-gray-50 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-gray-200">
+              <IndexList
+                selectedIndexId={selectedIndex?.id}
+                onIndexSelect={selectIndex}
+                indexes={indexes}
+                maxIndexes={maxIndexes}
+                onRefresh={refreshIndexes}
+              />
+            </div>
+          </div>
+
+          {/* Main content area */}
+          <div className="lg:col-span-2 space-y-6">
+            {!selectedIndex ? (
+              <div className="bg-gray-50 backdrop-blur-lg rounded-2xl shadow-2xl p-12 border border-gray-200 text-center">
+                <svg
+                  className="mx-auto h-16 w-16 text-gray-500 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Index Selected</h3>
+                <p className="text-gray-500">
+                  Create or select an index to start managing videos
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Tabs */}
+                <div className="bg-gray-50 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                  <div className="flex border-b border-gray-200">
+                    <button
+                      onClick={() => setActiveTab('videos')}
+                      className={`flex-1 px-6 py-4 font-semibold transition-all duration-200 ${
+                        activeTab === 'videos'
+                          ? 'bg-indigo-50 text-gray-900 border-b-2 border-indigo-400'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      Videos
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('search')}
+                      className={`flex-1 px-6 py-4 font-semibold transition-all duration-200 ${
+                        activeTab === 'search'
+                          ? 'bg-indigo-50 text-gray-900 border-b-2 border-indigo-400'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      Search
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('analysis')}
+                      className={`flex-1 px-6 py-4 font-semibold transition-all duration-200 ${
+                        activeTab === 'analysis'
+                          ? 'bg-indigo-50 text-gray-900 border-b-2 border-indigo-400'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-white'
+                      }`}
+                    >
+                      Analysis
+                    </button>
+                  </div>
+
+                  <div className="p-6">
+                    {/* Videos Tab */}
+                    {activeTab === 'videos' && (
+                      <div className="space-y-6">
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4">Upload Video</h3>
+                          <VideoUpload
+                            indexId={selectedIndex.id}
+                            onUploadComplete={handleVideoUploadComplete}
+                          />
+                        </div>
+                        <div>
+                          <VideoList
+                            indexId={selectedIndex.id}
+                            onVideoSelect={handleVideoSelect}
+                            onVideoDeleted={handleVideoDeleted}
+                            selectedVideoId={selectedVideo?.id}
+                            refreshTrigger={videoRefreshTrigger}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Search Tab */}
+                    {activeTab === 'search' && (
+                      <div className="space-y-6">
+                        <SearchBar
+                          onSearch={handleSearch}
+                          isSearching={isSearching}
+                        />
+                        {searchError && (
+                          <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
+                            <p className="text-red-400">{searchError}</p>
+                          </div>
+                        )}
+                        {searchResults.length > 0 && (
+                          <SearchResults
+                            results={searchResults}
+                            query={query}
+                            searchTime={searchTime}
+                            onClipSelect={handleClipSelect}
+                          />
+                        )}
+                        {!isSearching && searchResults.length === 0 && !searchError && query && (
+                          <div className="text-center py-12">
+                            <p className="text-gray-500">No results found for "{query}"</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Analysis Tab */}
+                    {activeTab === 'analysis' && (
+                      <div className="space-y-6">
+                        {!analysisResult ? (
+                          <>
+                            <AnalysisForm
+                              indexId={selectedIndex.id}
+                              videos={videos}
+                              onAnalyze={handleAnalyze}
+                              isAnalyzing={isAnalyzing}
+                            />
+                            {analysisError && (
+                              <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg">
+                                <p className="text-red-400">{analysisError}</p>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <AnalysisResults
+                            result={analysisResult}
+                            onClear={handleClearAnalysis}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Video Player */}
+                {(selectedVideo || selectedClip) && (
+                  <div className="bg-gray-50 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-gray-200">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      {selectedVideo 
+                        ? selectedVideo.filename 
+                        : selectedClipVideo 
+                          ? selectedClipVideo.filename 
+                          : 'Clip Playback'}
+                    </h3>
+                    {selectedVideo && (
+                      <VideoPlayer videoId={selectedVideo.id} autoPlay={true} />
+                    )}
+                    {selectedClip && (
+                      <VideoPlayer
+                        videoUrl={selectedClip.video_stream_url}
+                        startTime={selectedClip.start_timecode}
+                        endTime={selectedClip.end_timecode}
+                        autoPlay={true}
+                      />
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
