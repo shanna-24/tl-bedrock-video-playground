@@ -124,30 +124,221 @@ class ComplianceService:
         return params
     
     def _load_categories(self) -> list[dict]:
-        """Load and sort category configurations from S3."""
+        """Load and sort category configurations from S3.
+        
+        Automatically discovers all config files with type="analysis" by listing
+        files in the compliance config S3 prefix.
+        """
+        import boto3
+        
         categories = []
         
-        # Load individual check files from S3
-        check_files = [
-            "moral_standards_check.json",
-            "video_content_check.json"
-        ]
-        for check_file in check_files:
-            category = self._load_json_from_s3(check_file)
-            if category:
-                categories.append(category)
+        try:
+            # List all files in the compliance config directory
+            s3_client = boto3.client("s3", region_name=self.config.aws_region)
+            response = s3_client.list_objects_v2(
+                Bucket=self.config.s3_bucket_name,
+                Prefix=self.compliance_config_prefix
+            )
+            
+            if 'Contents' not in response:
+                logger.warning(f"No files found in S3 prefix: {self.compliance_config_prefix}")
+                return []
+            
+            # Check each JSON file for type="analysis"
+            for obj in response['Contents']:
+                key = obj['Key']
+                filename = key.replace(self.compliance_config_prefix, '')
+                
+                # Skip non-JSON files and params file
+                if not filename.endswith('.json') or filename == 'compliance_params.json':
+                    continue
+                
+                # Load and check the config
+                category = self._load_json_from_s3(filename)
+                if category and category.get("type") == "analysis":
+                    categories.append(category)
+                    logger.info(f"Loaded analysis category: {filename} (id={category.get('id', 'unknown')}, sequence={category.get('sequence', 999)})")
+        
+        except Exception as e:
+            logger.error(f"Error loading category configs from S3: {e}")
         
         if not categories:
-            raise ValueError(f"No category files found in S3 at {self.compliance_config_prefix}")
+            raise ValueError(f"No analysis category files found in S3 at {self.compliance_config_prefix}")
         
         return sorted(categories, key=lambda x: x.get("sequence", 999))
     
+    def _load_precheck_configs(self) -> list[dict]:
+        """Load all pre-check configurations from S3.
+        
+        Automatically discovers all config files with type="pre-check" by listing
+        files in the compliance config S3 prefix. Configs are sorted by their 
+        'sequence' field (lower sequence runs first).
+        
+        Returns:
+            List of pre-check configurations sorted by sequence, with their filenames
+        """
+        import boto3
+        from botocore.exceptions import ClientError
+        
+        precheck_configs = []
+        
+        try:
+            # List all files in the compliance config directory
+            s3_client = boto3.client("s3", region_name=self.config.aws_region)
+            response = s3_client.list_objects_v2(
+                Bucket=self.config.s3_bucket_name,
+                Prefix=self.compliance_config_prefix
+            )
+            
+            if 'Contents' not in response:
+                logger.warning(f"No files found in S3 prefix: {self.compliance_config_prefix}")
+                return []
+            
+            # Check each JSON file for type="pre-check"
+            for obj in response['Contents']:
+                key = obj['Key']
+                filename = key.replace(self.compliance_config_prefix, '')
+                
+                # Skip non-JSON files and params file
+                if not filename.endswith('.json') or filename == 'compliance_params.json':
+                    continue
+                
+                # Load and check the config
+                config = self._load_json_from_s3(filename)
+                if config and config.get("type") == "pre-check" and config.get("enabled", False):
+                    config["_filename"] = filename  # Track which file this came from
+                    precheck_configs.append(config)
+                    logger.info(f"Loaded pre-check: {filename} (id={config.get('id', 'unknown')}, sequence={config.get('sequence', 999)})")
+            
+            # Sort by sequence field (lower sequence runs first)
+            precheck_configs.sort(key=lambda x: x.get("sequence", 999))
+            
+            logger.info(f"Loaded {len(precheck_configs)} pre-check configurations")
+            
+        except Exception as e:
+            logger.error(f"Error loading pre-check configs from S3: {e}")
+            return []
+        
+        return precheck_configs
+    
     def _load_content_relevance_config(self) -> Optional[dict]:
-        """Load content relevance pre-check configuration from S3."""
+        """Load content relevance pre-check configuration from S3.
+        
+        DEPRECATED: Use _load_precheck_configs() instead for generic pre-check loading.
+        """
         config = self._load_json_from_s3("content_relevance_check.json")
         if config is None:
             logger.info("Content relevance check config not found in S3, skipping pre-check")
         return config
+    
+    async def _run_precheck(
+        self,
+        config: dict,
+        index_id: str,
+        video_id: str,
+        params: dict,
+        progress_callback: Optional[Callable[[str], None]] = None
+    ) -> Optional[dict]:
+        """Run a generic pre-check using transcription lexical search.
+        
+        Args:
+            config: Pre-check configuration dict with:
+                - search_config.search_term: Term(s) to search for
+                - search_config.min_results: Minimum matches required
+                - search_config.pass_condition: "found" (default) or "not_found"
+                  * "found": Pass if min_results found (e.g., content relevance)
+                  * "not_found": Pass if min_results NOT found (e.g., profanity check)
+            index_id: ID of the index containing the video
+            video_id: ID of the video to check
+            params: Compliance parameters (contains product_line, company, etc.)
+            progress_callback: Optional callback for progress updates
+            
+        Returns:
+            None if check passed, or issue dict if check failed
+        """
+        check_name = config.get("_filename", "unknown check")
+        description = config.get("description", "Pre-check")
+        
+        if not self.search_service:
+            logger.warning(f"Search service not available, skipping {check_name}")
+            return None
+        
+        if progress_callback:
+            await progress_callback(f"Running {check_name}...")
+        
+        search_config = config.get("search_config", {})
+        search_term = search_config.get("search_term")
+        min_results = search_config.get("min_results", 1)
+        pass_condition = search_config.get("pass_condition", "found")  # "found" or "not_found"
+        
+        if not search_term:
+            logger.warning(f"{check_name}: No search_term configured, skipping")
+            return None
+        
+        # Replace placeholders in search term(s)
+        if isinstance(search_term, list):
+            search_term = [term.format(**params) for term in search_term]
+            search_display = f"{search_term[0]} (+{len(search_term)-1} more)" if len(search_term) > 1 else search_term[0]
+        else:
+            search_term = search_term.format(**params)
+            search_display = search_term
+        
+        logger.info(f"{check_name}: searching for '{search_display}' in video {video_id} (pass_condition={pass_condition})")
+        
+        try:
+            # Perform lexical transcription search
+            results = await self.search_service.search_videos(
+                index_id=index_id,
+                query=search_term,
+                video_id=video_id,
+                modalities=["transcription"],
+                transcription_mode="lexical",
+                top_k=min_results,
+                generate_screenshots=False
+            )
+            
+            clips = results.clips
+            
+            # Format search term for logging
+            if isinstance(search_term, list):
+                search_display = f"{search_term[0]} (+{len(search_term)-1} more)" if len(search_term) > 1 else search_term[0]
+            else:
+                search_display = search_term
+                
+            logger.info(f"{check_name}: found {len(clips)} matches for '{search_display}'")
+            
+            # Determine pass/fail based on pass_condition
+            found_enough = len(clips) >= min_results
+            
+            if pass_condition == "not_found":
+                # Pass if NOT found (e.g., profanity check)
+                check_passed = not found_enough
+            else:
+                # Pass if found (e.g., content relevance)
+                check_passed = found_enough
+            
+            if check_passed:
+                logger.info(f"{check_name}: PASSED")
+                return None
+            else:
+                logger.info(f"{check_name}: FAILED")
+                on_fail = config.get("on_fail", {})
+                description = on_fail.get("description", "Pre-check failed")
+                description = description.format(**params)
+                
+                return {
+                    "Timecode": "00:00 - end",
+                    "Category": on_fail.get("category", "Pre-Check"),
+                    "Subcategory": on_fail.get("subcategory", "Failed"),
+                    "Status": on_fail.get("status", "BLOCK"),
+                    "Description": description
+                }
+                
+        except Exception as e:
+            logger.error(f"Error in {check_name}: {e}")
+            # On error, continue to next check rather than blocking
+            return None
     
     async def _check_content_relevance(
         self,
@@ -157,6 +348,9 @@ class ComplianceService:
         progress_callback: Optional[Callable[[str], None]] = None
     ) -> Optional[dict]:
         """Perform content relevance pre-check using transcription lexical search.
+        
+        DEPRECATED: This method is kept for backward compatibility.
+        Use _run_precheck() with _load_precheck_configs() instead.
         
         Args:
             index_id: ID of the index containing the video
@@ -184,10 +378,16 @@ class ComplianceService:
         search_term = search_config.get("search_term", "{product_line}")
         min_results = search_config.get("min_results", 1)
         
-        # Replace placeholders in search term
-        search_term = search_term.format(**params)
+        # Replace placeholders in search term(s)
+        # search_term can be a string or a list of strings
+        if isinstance(search_term, list):
+            search_term = [term.format(**params) for term in search_term]
+            search_display = f"{search_term[0]} (+{len(search_term)-1} more)" if len(search_term) > 1 else search_term[0]
+        else:
+            search_term = search_term.format(**params)
+            search_display = search_term
         
-        logger.info(f"Content relevance pre-check: searching for '{search_term}' in video {video_id}")
+        logger.info(f"Content relevance pre-check: searching for '{search_display}' in video {video_id}")
         
         try:
             # Perform lexical transcription search
@@ -202,7 +402,14 @@ class ComplianceService:
             )
             
             clips = results.clips
-            logger.info(f"Content relevance pre-check found {len(clips)} matches for '{search_term}'")
+            
+            # Format search term for logging
+            if isinstance(search_term, list):
+                search_display = f"{search_term[0]} (+{len(search_term)-1} more)" if len(search_term) > 1 else search_term[0]
+            else:
+                search_display = search_term
+                
+            logger.info(f"Content relevance pre-check found {len(clips)} matches for '{search_display}'")
             
             if len(clips) >= min_results:
                 # Content is relevant, continue to Pegasus analysis
@@ -490,7 +697,7 @@ class ComplianceService:
         Returns:
             Dict containing compliance results and S3 location
         """
-        # Load params early for content relevance check
+        # Load params early for pre-checks
         params = self._load_params()
         
         # Extract index_id from S3 URI if not provided
@@ -498,23 +705,35 @@ class ComplianceService:
             index_id = self._extract_index_id_from_s3_uri(video_s3_uri)
             logger.info(f"Extracted index_id '{index_id}' from S3 URI: {video_s3_uri}")
         
-        # Stage 1: Content relevance pre-check
-        content_relevance_issue = None
+        # Stage 1: Run all enabled pre-checks
+        precheck_issues = []
         if index_id:
-            content_relevance_issue = await self._check_content_relevance(
-                index_id=index_id,
-                video_id=video_id,
-                params=params,
-                progress_callback=progress_callback
-            )
+            precheck_configs = self._load_precheck_configs()
+            logger.info(f"Running {len(precheck_configs)} pre-checks")
+            
+            for precheck_config in precheck_configs:
+                check_name = precheck_config.get("_filename", "unknown")
+                logger.info(f"Running pre-check: {check_name}")
+                
+                issue = await self._run_precheck(
+                    config=precheck_config,
+                    index_id=index_id,
+                    video_id=video_id,
+                    params=params,
+                    progress_callback=progress_callback
+                )
+                
+                if issue:
+                    precheck_issues.append(issue)
+                    logger.info(f"Pre-check {check_name} failed: {issue.get('Description')}")
         
-        # If content is irrelevant, only generate summary (skip other compliance checks)
-        if content_relevance_issue:
+        # If any pre-check failed, only generate summary (skip other compliance checks)
+        if precheck_issues:
             if progress_callback:
-                await progress_callback("Content irrelevant - generating summary only...")
+                await progress_callback("Pre-checks failed - generating summary only...")
             
             prompt = SUMMARY_ONLY_PROMPT
-            logger.info("Content irrelevant - using summary-only prompt")
+            logger.info(f"Pre-checks failed ({len(precheck_issues)} issues) - using summary-only prompt")
         else:
             if progress_callback:
                 await progress_callback("Building compliance prompt...")
@@ -551,11 +770,18 @@ class ComplianceService:
         insights = response.get("message", "")
         compliance_result = self._parse_analysis_response(insights)
         
-        # Handle content relevance failure - add issue and set status
-        if content_relevance_issue:
-            # For irrelevant content, we only have summary - add the issue
-            compliance_result["Identified Issues"] = [content_relevance_issue]
-            compliance_result["Overall Status"] = content_relevance_issue.get("Status", "BLOCK")
+        # Handle pre-check failures - add issues and set status
+        if precheck_issues:
+            # For failed pre-checks, we only have summary - add all the issues
+            compliance_result["Identified Issues"] = precheck_issues
+            # Set overall status to worst status among pre-check issues
+            statuses = [issue.get("Status", "APPROVE") for issue in precheck_issues]
+            if "BLOCK" in statuses:
+                compliance_result["Overall Status"] = "BLOCK"
+            elif "REVIEW" in statuses:
+                compliance_result["Overall Status"] = "REVIEW"
+            else:
+                compliance_result["Overall Status"] = "APPROVE"
         else:
             # Enforce correct status values on issues based on category config
             compliance_result = self._enforce_issue_statuses(compliance_result)

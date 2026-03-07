@@ -1,0 +1,21 @@
+{
+    "id": "profanity",
+    "type": "pre-check",
+    "sequence": 2,
+    "enabled": false,
+    "description": "Pre-check for profanity using transcription lexical search before Pegasus analysis",
+    "search_config": {
+        "search_type": "lexical",
+        "search_field": "transcription",
+        "search_term": ["shit", "fuck"],
+        "min_results": 1,
+        "pass_condition": "not_found",
+        "_comment_pass_condition": "Use 'found' to pass when terms ARE found (content relevance), or 'not_found' to pass when terms are NOT found (profanity check)"
+    },
+    "on_fail": {
+        "category": "Initial Review",
+        "subcategory": "Profanity",
+        "status": "BLOCK",
+        "description": "The video includes unacceptable profanity."
+    }
+}

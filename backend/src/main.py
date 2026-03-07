@@ -393,7 +393,7 @@ async def lifespan(app: FastAPI):
 
 # Create FastAPI application
 app = FastAPI(
-    title="TL-Video-Playground",
+    title="TwelveLabs on Amazon Bedrock",
     description="Video archive search and analysis system using TwelveLabs AI models",
     version="1.0.0",
     lifespan=lifespan

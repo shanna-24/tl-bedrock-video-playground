@@ -1,4 +1,4 @@
-# TwelveLabs on AWS Bedrock 🎥
+# TwelveLabs on Amazon Bedrock 🎥
 
 A video archive search and analysis system powered by TwelveLabs AI models (Marengo and Pegasus) through Amazon Bedrock.
 

@@ -12,7 +12,7 @@ import subprocess
 import tempfile
 import time
 from pathlib import Path
-from typing import List, Optional, Dict, Any, TYPE_CHECKING
+from typing import List, Optional, Dict, Any, TYPE_CHECKING, Union
 from io import BytesIO
 
 from aws.bedrock_client import BedrockClient
@@ -86,7 +86,7 @@ class SearchService:
     async def search_videos(
         self,
         index_id: str,
-        query: Optional[str] = None,
+        query: Optional[Union[str, List[str]]] = None,
         image_bytes: Optional[bytes] = None,
         top_k: int = 10,
         modalities: Optional[List[str]] = None,
@@ -105,7 +105,10 @@ class SearchService:
         
         Args:
             index_id: ID of the index to search
-            query: Optional natural language search query
+            query: Optional natural language search query. Can be:
+                   - A single string: "term"
+                   - A list of alternative terms: ["term1", "term2", "term3"]
+                   For lexical search, multiple terms use OR logic (any match counts)
             image_bytes: Optional image bytes for visual search
             top_k: Number of results to return (default: 10)
             modalities: Optional list of modalities to search (visual, audio, transcription).
@@ -132,6 +135,17 @@ class SearchService:
         if top_k < 1:
             raise ValueError("top_k must be at least 1")
         
+        # Normalize query for logging and semantic search
+        # For semantic search, if query is a list, join with OR
+        query_for_semantic = None
+        if query:
+            if isinstance(query, list):
+                query_for_semantic = " OR ".join(query)
+                query_display = f"{query[0][:50]}... ({len(query)} terms)"
+            else:
+                query_for_semantic = query
+                query_display = query[:50]
+        
         # Determine search mode for logging
         if query and image_bytes:
             search_mode = "multimodal"
@@ -144,7 +158,7 @@ class SearchService:
         modality_desc = ", ".join(modalities) if modalities else "all"
         logger.info(f"Performing {search_mode} search on index {index_id} (modalities: {modality_desc}, transcription_mode: {transcription_mode})")
         if query:
-            logger.info(f"Query: {query[:50]}...")
+            logger.info(f"Query: {query_display}...")
         
         start_time = time.time()
         
@@ -161,6 +175,9 @@ class SearchService:
                 if transcription_mode == "lexical":
                     # Lexical only - exclude transcription from semantic search
                     do_lexical_search = True
+                    # If only transcription modality is requested, skip semantic search entirely
+                    if modalities == ["transcription"]:
+                        do_semantic_search = False
                 elif transcription_mode == "both":
                     # Both semantic and lexical
                     do_lexical_search = True
@@ -183,7 +200,7 @@ class SearchService:
                 # Only do semantic search if there are modalities to search or we have an image
                 if semantic_modalities or image_bytes:
                     # Embed the query using Marengo (text, image, or multimodal)
-                    query_embedding = await self._embed_query_multimodal(query, image_bytes)
+                    query_embedding = await self._embed_query_multimodal(query_for_semantic, image_bytes)
                     
                     # Request more results than needed to account for filtering
                     search_top_k = top_k * 3
@@ -310,9 +327,12 @@ class SearchService:
             # Calculate search time
             search_time = time.time() - start_time
             
+            # Format query for display (convert list to string if needed)
+            query_display = query_for_semantic if query_for_semantic else (query if isinstance(query, str) else " OR ".join(query) if query else "[image search]")
+            
             # Create SearchResults object
             results = SearchResults(
-                query=query or "[image search]",
+                query=query_display,
                 clips=clips,
                 total_results=len(clips),
                 search_time=search_time
@@ -503,7 +523,7 @@ class SearchService:
     
     async def _lexical_transcription_search(
         self,
-        query: str,
+        query: Union[str, List[str]],
         index_id: str,
         top_k: int,
         video_id: Optional[str] = None
@@ -511,10 +531,14 @@ class SearchService:
         """Perform lexical search across transcription text.
         
         Searches for exact substring matches (case-insensitive) in stored
-        transcription JSON files.
+        transcription JSON files. Supports multiple alternative search terms
+        with OR logic.
         
         Args:
-            query: Search text to find in transcriptions
+            query: Search text to find in transcriptions. Can be:
+                   - A single string: "term"
+                   - A list of alternative terms: ["term1", "term2", "term3"]
+                   All terms are matched with OR logic (any match counts)
             index_id: ID of the index to search
             top_k: Maximum number of results to return
             video_id: Optional video ID to limit search to a single video
@@ -525,13 +549,18 @@ class SearchService:
         import boto3
         from botocore.exceptions import ClientError
         
-        logger.info(f"Performing lexical transcription search for: {query[:50]}...")
+        # Normalize query to list of terms
+        if isinstance(query, str):
+            search_terms = [query.lower().strip()]
+        else:
+            search_terms = [term.lower().strip() for term in query if term.strip()]
+        
+        if not search_terms:
+            return []
+        
+        logger.info(f"Performing lexical transcription search for: {search_terms[0][:50]}... ({len(search_terms)} term(s))")
         
         matching_clips = []
-        query_lower = query.lower().strip()
-        
-        if not query_lower:
-            return []
         
         try:
             # Get all videos in the index (or just the specified video)
@@ -574,16 +603,24 @@ class SearchService:
                     logger.debug(f"Error parsing transcription for video {vid}: {e}")
                     continue
                 
-                # Search each segment for the query
+                # Search each segment for any of the query terms
                 for segment in segments:
                     text = segment.get("text", "")
                     if not text:
                         continue
                     
                     text_lower = text.lower()
-                    if query_lower in text_lower:
+                    
+                    # Check if any search term matches (OR logic)
+                    matched_term = None
+                    for term in search_terms:
+                        if term in text_lower:
+                            matched_term = term
+                            break
+                    
+                    if matched_term:
                         # Calculate relevance based on match quality
-                        relevance = self._calculate_lexical_relevance(query_lower, text_lower)
+                        relevance = self._calculate_lexical_relevance(matched_term, text_lower)
                         
                         start_time = float(segment.get("start_time", 0))
                         end_time = float(segment.get("end_time", 0))
@@ -611,7 +648,8 @@ class SearchService:
                             },
                             "distance": 1.0 - relevance,  # Convert relevance to distance
                             "match_type": "lexical",
-                            "transcription_match": text
+                            "transcription_match": text,
+                            "matched_term": matched_term  # Track which term matched
                         })
             
             # Sort by relevance (lower distance = higher relevance)

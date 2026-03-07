@@ -1,14 +1,20 @@
 {
+    "id": "content_relevance",
+    "type": "pre-check",
+    "sequence": 1,
     "enabled": true,
     "description": "Pre-check for content relevance using transcription lexical search before Pegasus analysis",
     "search_config": {
         "search_type": "lexical",
         "search_field": "transcription",
         "search_term": "{product_line}",
-        "min_results": 1
+        "_comment_search_term": "Can be a single string or array of alternatives. Examples: 'Product X' or ['Product X', 'Product-X', 'ProductX']",
+        "min_results": 1,
+        "pass_condition": "found",
+        "_comment_pass_condition": "Use 'found' to pass when terms ARE found (content relevance), or 'not_found' to pass when terms are NOT found (profanity check)"
     },
     "on_fail": {
-        "category": "Content Relevance",
+        "category": "Initial Review",
         "subcategory": "Irrelevant Content",
         "status": "BLOCK",
         "description": "The video does not mention {product_line} at any point in the transcription."

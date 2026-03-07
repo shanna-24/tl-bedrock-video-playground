@@ -27,7 +27,7 @@ class TestFastAPIApplication:
         from main import app
         
         assert app is not None
-        assert app.title == "TL-Video-Playground"
+        assert app.title == "TwelveLabs on Amazon Bedrock"
         assert app.version == "1.0.0"
     
     def test_cors_middleware_configured(self):

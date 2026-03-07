@@ -1,6 +1,7 @@
 {
     "id": "moral_standards",
-    "sequence": 2,
+    "type": "analysis",
+    "sequence": 3,
     "name": "Moral Standards",
     "description": "Assess the ENTIRE VIDEO for compliance with acceptable moral standards (for North America and Western Europe). Only create issues for content that violates the following classifications:",
     "subcategories": [

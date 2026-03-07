@@ -33,7 +33,7 @@ describe('App Routing', () => {
     render(<App />);
 
     // Should show login page
-    expect(screen.getByText('TL Video Playground')).toBeInTheDocument();
+    expect(screen.getByText('TwelveLabs on AWS Bedrock')).toBeInTheDocument();
     expect(screen.getByText('Sign in to access your video archive')).toBeInTheDocument();
   });
 
@@ -51,7 +51,7 @@ describe('App Routing', () => {
     render(<App />);
 
     // Should show dashboard
-    expect(screen.getByText('TL Video Playground')).toBeInTheDocument();
+    expect(screen.getByText('TwelveLabs on AWS Bedrock')).toBeInTheDocument();
     expect(screen.getByText(/Welcome to your video archive/)).toBeInTheDocument();
     expect(screen.getByText('Sign Out')).toBeInTheDocument();
   });

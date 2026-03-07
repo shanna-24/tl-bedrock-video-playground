@@ -1,6 +1,7 @@
 {
     "id": "video_content",
-    "sequence": 3,
+    "type": "analysis",
+    "sequence": 4,
     "name": "Video Content",
     "description": "Assess the ENTIRE VIDEO to identify any content quality issues based on the following classifications:",
     "subcategories": [
