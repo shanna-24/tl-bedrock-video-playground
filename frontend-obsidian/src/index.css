@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /* Obsidian Lens Core Palette */
+  --color-background: #060e20;
+  --color-surface: #060e20;
+  --color-surface-dim: #060e20;
+  --color-surface-container-lowest: #000000;
+  --color-surface-container-low: #091328;
+  --color-surface-container: #0f1930;
+  --color-surface-container-high: #141f38;
+  --color-surface-container-highest: #192540;
+  --color-surface-variant: #192540;
+  --color-surface-bright: #1f2b49;
+
+  /* Primary */
+  --color-primary: #b8fd4b;
+  --color-primary-container: #83c300;
+  --color-primary-dim: #aaee3d;
+  --color-on-primary: #3d5e00;
+  --color-on-primary-container: #223600;
+
+  /* On-Surface */
+  --color-on-surface: #dee5ff;
+  --color-on-surface-variant: #a3aac4;
+  --color-on-background: #dee5ff;
+
+  /* Outline */
+  --color-outline: #6d758c;
+  --color-outline-variant: #40485d;
+
+  /* Error */
+  --color-error: #ff7351;
+  --color-error-container: #b92902;
+  --color-error-dim: #d53d18;
+  --color-on-error: #450900;
+  --color-on-error-container: #ffd2c8;
+
+  /* Secondary */
+  --color-secondary: #dfec5f;
+  --color-secondary-container: #5c6300;
+
+  /* Tertiary */
+  --color-tertiary: #fffae4;
+  --color-tertiary-container: #fcef58;
+
+  /* Inverse */
+  --color-inverse-surface: #faf8ff;
+  --color-inverse-on-surface: #4d556b;
+  --color-inverse-primary: #456900;
+
+  /* Typography */
+  --font-family-headline: 'Inter', sans-serif;
+  --font-family-body: 'Inter', sans-serif;
+  --font-family-label: 'Inter', sans-serif;
+
+  /* Border Radius */
+  --radius: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+}
+
+/* Glass Panel */
+.glass-panel {
+  background: rgba(20, 31, 56, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Ghost Border for inputs */
+.ghost-border {
+  border: 1px solid rgba(64, 72, 93, 0.15);
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #192540; border-radius: 10px; }
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
