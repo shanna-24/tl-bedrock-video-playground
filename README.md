@@ -152,28 +152,28 @@ For complete deployment instructions, see [AWS Deployment Guide](docs/AWS_DEPLOY
 ## 🏛️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Browser (React)                      │
-└────────────────────────┬────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────┐
+│                    User Browser (React)                    │
+└────────────────────────┬───────────────────────────────────┘
                          │ HTTPS/REST API
                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│                Backend API (Python/FastAPI)                  │
-│  Auth • Index Manager • Search • Analysis • Video Service   │
-│                                                               │
+┌────────────────────────────────────────────────────────────┐
+│                Backend API (Python/FastAPI)                │
+│  Auth • Index Manager • Search • Analysis • Video Service  │
+│                                                            │
 │  ┌─────────────────────────────────────────────────────┐   │
 │  │      Background Embedding Job Processor             │   │
 │  │  Monitors async jobs • Retrieves embeddings         │   │
 │  │  Stores in S3 Vectors • Processes segments          │   │
 │  │  (transcription + thumbnails in one pass)           │   │
 │  └─────────────────────────────────────────────────────┘   │
-└────────────────────────┬────────────────────────────────────┘
+└────────────────────────┬───────────────────────────────────┘
                          │ AWS SDK
                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   AWS Infrastructure                         │
+┌────────────────────────────────────────────────────────────┐
+│                   AWS Infrastructure                       │
 │  Bedrock (Marengo + Pegasus) • S3 • S3 Vectors             │
-└─────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────┘
 ```
 
 ### Key Components
